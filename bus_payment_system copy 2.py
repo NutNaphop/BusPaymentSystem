@@ -60,8 +60,6 @@ def table_user(mode):
         user_table.add_row([id,name,age,status,balance])
     print(user_table) 
 
-
-
 #Function of ADMIN
 def admin_head():
     print('''
@@ -123,6 +121,7 @@ def admin_menu():
             print('0 1 2 3 Only Please Try Again')
             clear()
             admin_menu()
+            break
         except KeyboardInterrupt :
             print('Exit Admin Menu Select....')
             clear()
@@ -247,17 +246,25 @@ def delete_admin():
                     if con.lower() == 'y':
                         clear()
                         delete_admin()
+                        break
                     elif con.lower() == 'n':
                         print('Redirect to Main Menu....')
                         clear()
                         admin_menu()
                         break
-                else: 
+                elif delete_com == 1: 
+                    clear()
                     delete_admin()
+                    break
+                else:
+                    clear()
+                    delete_admin()
+                    break
             else:
                 input('Not Found This ID Please Try Again ....')
                 clear()
                 delete_admin()
+                break
         except (ValueError,TypeError) as e:
             # print(e)
             print('ID Should Be Number Please Try Again')
@@ -312,20 +319,32 @@ def find_admin():
                             if con.lower() == 'y':
                                 clear()
                                 find_admin()
+                                return 0
                             elif con.lower() == 'n':
                                 print('Go to Main Admin Menu....')
                                 clear()
                                 admin_menu()
-                                break
+                                return 0
                             else: 
                                 print('Go to Main Admin Menu....')
                                 clear()
                                 admin_menu()
-                                break
+                                return 0 
+                        else:
+                            input('Not Found This Name Please Try Again')
+                            clear()
+                            find_admin()
+                            return 0 
+                else:
+                    input('Not Found Please Try Again')
+                    clear()
+                    find_admin()
+                    return 0 
             else:
                 input('Your Key Finding Should Not To Blank...')
                 clear()
                 find_admin()
+                break
         except (ValueError,KeyError,TypeError) as e:
             print(e)
         except KeyboardInterrupt :
@@ -451,7 +470,6 @@ def pay_1():
                         pay=bus_stop[10]['Price']-(bus_stop[start]['Price']-bus_stop[stop]['Price'])
                     elif start == stop:
                         pay=50
-                        print('Wrong Destination Please Try Again')
                     else:
                         pay=bus_stop[stop]['Price']-bus_stop[start]['Price']
                 print(f'\n=====You are from {start_b} to {stop_b}=====')
