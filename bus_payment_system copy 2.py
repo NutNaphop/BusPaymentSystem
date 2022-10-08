@@ -252,6 +252,11 @@ def delete_admin():
                         clear()
                         admin_menu()
                         break
+                    else:
+                        print('Redirect to Main Menu....')
+                        clear()
+                        admin_menu()
+                        break
                 elif delete_com == 1: 
                     clear()
                     delete_admin()
