@@ -1,12 +1,66 @@
 #Library and Value
 
 from random import *
-from prettytable import PrettyTable
 from os import system,name
 from time import sleep
 
-data = {25032:{'Name':'Naphop Khumchawna','Age':25,'money':100,'Status':'WORKING AGE'},24354:{'Name':'Veeraya Lekchaaum','Age':17,'money':40,'Status':'STUDYING AGE'},74512:{'Name':'Klittima Chawwadee','Age':19,'money':50,'Status':'STUDYING AGE'}}
+data = {25032:{'Name':'Naphop Khumchawna','Age':25,'Balance':100,'Status':'WORKING AGE'},24354:{'Name':'Veeraya Lekchaaum','Age':17,'Balance':40,'Status':'STUDYING AGE'},74512:{'Name':'Klittima Chawwadee','Age':19,'Balance':50,'Status':'STUDYING AGE'}}
 bus_stop = {1:{'BName':'Busta Shinjuku','Price':5},2:{'BName':'Tomigaya','Price':10},3:{'BName':'Sakurabashi','Price':15},4:{'BName':'Namsan Seoul Tower','Price':20},5:{'BName':'Seoul Arts Center','Price':25},6:{'BName':'Myeong-dong Entrance','Price':30},7:{'BName':'Seoul Square','Price':35},8:{'BName':'Bridge St','Price':40},9:{'BName':'Manchester Coach Station','Price':45},10:{'BName':'Manchester Shudehill','Price':50}}
+
+#Function System 
+def clear():
+    sleep(0.5)
+    if name == 'nt':
+        _ = system('cls')
+
+def install_tools():
+    try:
+        from prettytable import PrettyTable
+    except ImportError:
+        print('Module Not Found Please Wait We Preparing To Install IT . . .')
+        sleep(1)
+        system('pip install prettytable')
+        print('Install SuccessFully ! ! !\n')
+        sleep(1)
+        system('cls')
+    
+
+# Create Table Function
+def create_table(id,field_name):
+    x = PrettyTable()
+    x.field_names=field_name
+    j = 1
+    ls_per_user= []
+    for index_name in range (len(field_name)):
+        if index_name == 0:
+            ls_per_user.append(id)
+        else:
+            ls_per_user.append(data[id][field_name[index_name]])
+            j += 1
+    # print(ls_per_user)
+    table = lambda x : x
+    x.add_row([table(k)for k in ls_per_user])
+    return print(x)
+
+def table_user(mode):
+    user_table = PrettyTable()
+    match mode:
+        case 1:
+            user_table.title='Edit Mode'
+        case 2 :
+            user_table.title = 'Delete Mode'
+        case 3 :
+            user_table.title = 'Finding Mode'
+    user_table.field_names = ['ID','NAME','AGE','STATUS','BALANCE']
+    for id in data.keys():
+        name = data[id]['Name']
+        status = data[id]['Status']
+        balance = data[id]['Balance']
+        age = data[id]['Age']
+        user_table.add_row([id,name,age,status,balance])
+    print(user_table) 
+
+
 
 #Function of ADMIN
 def admin_head():
@@ -74,28 +128,13 @@ def admin_menu():
             clear()
             break
 
-def table_user():
-    user_table = PrettyTable()
-    user_table.field_names = ['ID','NAME','AGE','STATUS','BALANCE']
-    for id in data.keys():
-        name = data[id]['Name']
-        status = data[id]['Status']
-        balance = data[id]['money']
-        age = data[id]['Age']
-        user_table.add_row([id,name,age,status,balance])
-    print(user_table) 
-
 def edit_admin():
     while True:
         admin_head()
-        print('''  _   _   _   _     _   _   _   _  
- / \ / \ / \ / \   / \ / \ / \ / \ 
-( E | d | i | t ) ( U | s | e | r )
- \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ 
-''')
         pick_table = PrettyTable()
         try:
-            table_user()
+            table_user(1)
+            print('''\n===Edit Usᴇʀ Data ADMIN Mode===\n''')
             edit_id = int(input('Edit ID : '))
             if check_id(edit_id) == edit_id:
                 edit_choose = int(input('\nEDIT NAME OR AGE ?\n[0]Exit This Menu\n[1]Name\n[2]Age\nChoose : '))
@@ -125,6 +164,12 @@ def edit_admin():
                                 print('Go to Main Admin Menu....')
                                 clear()
                                 admin_menu()
+                                break
+                            else:
+                                print('Go to Main Admin Menu....')
+                                clear()
+                                admin_menu()
+                                break
                         case 2 :
                             pick_table.field_names = ['ID','NAME','AGE','STATUS']
                             pick_table.add_row([edit_id,data[edit_id]['Name'],data[edit_id]['Age'],data[edit_id]['Status']])
@@ -157,10 +202,12 @@ def edit_admin():
                                 print('Go to Main Admin Menu....')
                                 clear()
                                 admin_menu()
+                                break
                             else:
                                 print('Go to Main Admin Menu....')
                                 clear()
                                 admin_menu()
+                                break
                 else : 
                     input('0 or 1 or 2 Only Please Try Again...')
                     clear()
@@ -182,25 +229,20 @@ def edit_admin():
 def delete_admin():
     while True:
         admin_head()
-        print('''  _   _   _   _   _   _     _   _   _   _  
- / \ / \ / \ / \ / \ / \   / \ / \ / \ / \ 
-( d | e | l | e | t | e ) ( u | s | e | r )
- \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ 
-''')
         delete_table = PrettyTable()
-        table_user()
-        try: 
+        table_user(2)
+        try:
+            print('''\n===Delete Usᴇʀ Data ADMIN Mode===\n''') 
             delete_id = int(input('Delete ID : '))
             if delete_id in data.keys():
-                delete_table.field_names=['ID','NAME','AGE','STATUS','BALANCE']
-                delete_table.add_row([delete_id,data[delete_id]['Name'],data[delete_id]['Age'],data[delete_id]['Status'],data[delete_id]['money']])
+                create_table(id,['ID','NAME','AGE','STATUS','BALANCE'])
                 delete_com = int(input("Do You Want To Delete ?\n[0]Yes\n[1]No\nChoose: "))
                 if delete_com == 0:
                     print('Please Wait...')   
                     sleep(1)               
                     del data[delete_id]
                     print('\nDelete successfully ! ! !')
-                    table_user()
+                    table_user(2)
                     con = str(input('\nDo You Want to Continue ?(y/n): '))
                     if con.lower() == 'y':
                         clear()
@@ -228,29 +270,18 @@ def delete_admin():
 
 def find_admin():
     while True:
-        found_table = PrettyTable()
         try:
             admin_head()
-            print('''  _   _   _   _   _   _   _     _   _   _   _  
- / \ / \ / \ / \ / \ / \ / \   / \ / \ / \ / \ 
-( F | i | n | d | i | n | g ) ( u | s | e | r )
- \_/ \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ 
-''')
-            table_user()
+            table_user(3)
+            print('''\n===Finding Usᴇʀ Data ADMIN Mode===\n''')
             find_id = input('Find By Name Or ID : ')
             # print(find_id)
             if find_id != '':
                 if str(find_id).isnumeric():
                     if check_id(int(find_id)) == int(find_id):
                         ID = int(find_id)
-                        name = data[ID]['Name']
-                        age = data[ID]['Age']
-                        status = data[ID]['Status']
-                        balance = data[ID]['money']
-                        found_table.field_names = ['ID','Name','Age','Status','Money']
                         print('\nFounding ! ! !')
-                        found_table.add_row([ID,name,age,status,balance])
-                        print(found_table)
+                        create_table(ID,['ID','Name','Age','Status','Balance'])
                         con = str(input('\nDo you Want To Find Again ?(y/n)? : '))
                         if con.lower() == 'y':
                             clear()
@@ -275,14 +306,8 @@ def find_admin():
                 elif str(find_id).isalpha() == False:
                     for id in data.keys():
                         if data[id]['Name'] == str(find_id):
-                            name = data[id]['Name']
-                            age = data[id]['Age']
-                            status = data[id]['Status']
-                            balance = data[id]['money']
-                            found_table.field_names = ['ID','Name','Age','Status','Money']
                             print('\nFounding ! ! !')
-                            found_table.add_row([id,name,age,status,balance])
-                            print(found_table)
+                            create_table(id,['ID','Name','Age','Status','Balance'])
                             con = str(input('\nDo you Want To Find Again ?(y/n)? : '))
                             if con.lower() == 'y':
                                 clear()
@@ -314,24 +339,14 @@ def find_admin():
 #Function Of User
 def name_program():
         print(''' ____              ____                                  _     ____            _                 
-| __ ) _   _ ___  |  _ \ __ _ _   _ _ __ ___   ___ _ __ | |_  / ___| _   _ ___| |_ ___ _ __ ___  
+| __ ) _   _ ___  |  _ \ __ _ _   _ _ __ ___   ___ _ __ | |_  / ___| _   _ ___| |_ ___ _ __ ___   
 |  _ \| | | / __| | |_) / _` | | | | '_ ` _ \ / _ \ '_ \| __| \___ \| | | / __| __/ _ \ '_ ` _ \ 
 | |_) | |_| \__ \ |  __/ (_| | |_| | | | | | |  __/ | | | |_   ___) | |_| \__ \ ||  __/ | | | | |
 |____/ \__,_|___/ |_|   \__,_|\__, |_| |_| |_|\___|_| |_|\__| |____/ \__, |___/\__\___|_| |_| |_|
                               |___/                                  |___/                       ''')
-def clear():
-    sleep(0.5)
-    if name == 'nt':
-        _ = system('cls')
 
 def show_id(id):
-    table_register = PrettyTable()
-    name = data[id]['Name']
-    money = data[id]['money']
-    status = data[id]['Status']
-    table_register.field_names = ['Your ID','Name','Status','Balance']
-    table_register.add_row([id,name,status,money])
-    return print(table_register)
+    return create_table(id,['Your ID','Name','Status','Balance'])
 def farewell(name):
     print(f'\nThank You Have A Goodday {name}')
 
@@ -353,13 +368,8 @@ def gen_id():
 def register():
     while True:
         name_program()
-        print('''
-  _   _   _   _   _   _   _   _     _   _   _   _  
- / \ / \ / \ / \ / \ / \ / \ / \   / \ / \ / \ / \ 
-( R | e | g | i | s | t | e | r ) ( P | a | g | e )
- \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ 
-''')
         try:
+            print('''===Rᴇɢɪsᴛᴇʀ Usᴇʀ Mᴇɴᴜ===\n''')
             id = gen_id()
             name = str(input("Your Name is : "))
             if name.isalpha() :
@@ -383,7 +393,7 @@ def register():
                             data[id] = {
                                 'Name':fullname,
                                 'Age':age,
-                                'money':0,
+                                'Balance':0,
                                 'Status':status
                                 }
                             print('\nRegister Successfully ! ! !')
@@ -417,21 +427,13 @@ def register():
 def pay_1():
     while True:
         name_program()
-        print('''  _   _   _   _   _   _   _     _   _   _   _  
- / \ / \ / \ / \ / \ / \ / \   / \ / \ / \ / \ 
-( P | a | y | m | e | n | t ) ( P | a | g | e )
- \_/ \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ ''')
-        table_payment = PrettyTable()
         table_bus = PrettyTable()
         result_payment = PrettyTable()
         try: 
-            # print(data)
+            print('''===Payment Usᴇʀ Mᴇɴᴜ===''')
             user_id=int(input("\nYour ID :"))
             if check_id(user_id) == user_id:
-                table_payment.field_names = ['Your ID','Your Name','Balance']
-                table_payment.add_row([user_id,data[user_id]["Name"],data[user_id]["money"]])
-                print(table_payment)
-                # print(data)
+                create_table(user_id,['ID','Name','Status','Balance'])
                 table_bus.field_names=['NO.','Bus Stop Pitch']
                 for select in bus_stop.keys():
                     table_bus.add_row([select,bus_stop[select]['BName']])
@@ -459,7 +461,7 @@ def pay_1():
                     rate = 0
                 else:
                     rate = 2
-                if pay>data[user_id]['money']:
+                if pay>data[user_id]['Balance']:
                     print('\nYour balance is not sufficient')
                     choose = str(input('Would You Like To Top Up ? (y/n) : '))
                     if choose.lower() == 'y':
@@ -475,10 +477,9 @@ def pay_1():
                         print('Please Try Again')
                         break                       
                 else:
-                    table_payment.clear_rows()
                     pay_discount=pay-rate
-                    stable = data[user_id]['money']-pay_discount
-                    data[user_id]['money'] = stable
+                    stable = data[user_id]['Balance']-pay_discount
+                    data[user_id]['Balance'] = stable
                     result_payment.field_names=(['ID','Name','Age','Promotion','Full Price','Discount','Discount Price','Balance'])
                     result_payment.add_row([user_id,data[user_id]["Name"],user_age,status,pay,rate,pay_discount,stable])
                     print('\n',result_payment)
@@ -507,29 +508,22 @@ def pay_1():
 def top_up():
     while True:
         name_program()
-        print('''
-  _   _   _   _   _   _     _   _   _   _  
- / \ / \ / \ / \ / \ / \   / \ / \ / \ / \ 
-( T | o | p | - | U | p ) ( P | a | g | e )
- \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ ''')
         top_up_table = PrettyTable()
         final_table = PrettyTable()
         try:
+            print('''===Top Up User Menu===''')
             user_id=int(input("\nYour ID : "))
             if check_id(user_id) == user_id:
-                money=data[user_id]['money']
-                name=data[user_id]['Name']
-                top_up_table.field_names=['ID','Name','Balance']
-                top_up_table.add_row([user_id,name,money])
-                print(top_up_table)
+                create_table(user_id,['ID','Name','Balance'])
                 topup=int(input('Top up : '))
                 
                 if topup>=1:
-                    money += topup
-                    data[user_id]['money'] = money
+                    Balance = data[user_id]['Balance']
+                    Balance += topup
+                    data[user_id]['Balance'] = Balance
                     print('\nSuccessfully ! ! ! ! ')
                     final_table.field_names=['ID','Name','TopUp','Balance']
-                    final_table.add_row([user_id,name,f'+{topup}',money])
+                    final_table.add_row([user_id,name,f'+{topup}',Balance])
                     print(final_table)
                     print('Thank You For Top Up')
                     input('Press Any Key To Continue... ')
@@ -556,7 +550,7 @@ def top_up():
                         clear()
                         break
         except (ValueError,TypeError) as e:
-            input('Your Money Should Be Only Number Please Try Again...')
+            input('Your Balance Should Be Only Number Please Try Again...')
             clear()
         except KeyboardInterrupt:
             print('Exit Top Up Menu ...')
@@ -566,7 +560,7 @@ def top_up():
 
 
 # Main Programe
-
+install_tools()
 while True :
     # edit_admin()
     name_program()
