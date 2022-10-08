@@ -1,8 +1,20 @@
 #Library and Value
-
 from random import *
 from os import system,name
 from time import sleep
+
+#Special Module Check Start ==> Dont Touch 
+try:
+    from prettytable import PrettyTable
+except ImportError:
+    print('Module Not Found Please Wait We Preparing To Install IT . . .')
+    sleep(1)
+    system('pip install prettytable')
+    print('Install SuccessFully ! ! !\n')
+    sleep(1)
+    system('cls')
+finally :
+    from prettytable import PrettyTable
 
 data = {25032:{'Name':'Naphop Khumchawna','Age':25,'Balance':100,'Status':'WORKING AGE'},24354:{'Name':'Veeraya Lekchaaum','Age':17,'Balance':40,'Status':'STUDYING AGE'},74512:{'Name':'Klittima Chawwadee','Age':19,'Balance':50,'Status':'STUDYING AGE'}}
 bus_stop = {1:{'BName':'Busta Shinjuku','Price':5},2:{'BName':'Tomigaya','Price':10},3:{'BName':'Sakurabashi','Price':15},4:{'BName':'Namsan Seoul Tower','Price':20},5:{'BName':'Seoul Arts Center','Price':25},6:{'BName':'Myeong-dong Entrance','Price':30},7:{'BName':'Seoul Square','Price':35},8:{'BName':'Bridge St','Price':40},9:{'BName':'Manchester Coach Station','Price':45},10:{'BName':'Manchester Shudehill','Price':50}}
@@ -12,18 +24,6 @@ def clear():
     sleep(0.5)
     if name == 'nt':
         _ = system('cls')
-
-def install_tools():
-    try:
-        from prettytable import PrettyTable
-    except ImportError:
-        print('Module Not Found Please Wait We Preparing To Install IT . . .')
-        sleep(1)
-        system('pip install prettytable')
-        print('Install SuccessFully ! ! !\n')
-        sleep(1)
-        system('cls')
-    
 
 # Create Table Function
 def create_table(id,field_name):
@@ -235,7 +235,7 @@ def delete_admin():
             print('''\n===Delete Usᴇʀ Data ADMIN Mode===\n''') 
             delete_id = int(input('Delete ID : '))
             if delete_id in data.keys():
-                create_table(id,['ID','NAME','AGE','STATUS','BALANCE'])
+                create_table(delete_id,['ID','Name','Age','Status','Balance'])
                 delete_com = int(input("Do You Want To Delete ?\n[0]Yes\n[1]No\nChoose: "))
                 if delete_com == 0:
                     print('Please Wait...')   
@@ -560,7 +560,6 @@ def top_up():
 
 
 # Main Programe
-install_tools()
 while True :
     # edit_admin()
     name_program()
