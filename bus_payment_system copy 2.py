@@ -520,6 +520,9 @@ def pay_1():
                 elif choose.lower()=='n':
                     clear()
                     pass
+                else: 
+                    clear()
+                    pass
         except (TypeError,ValueError) as e : 
             input('It Should Be Number Please Try Again...')
             clear()
@@ -573,7 +576,7 @@ def top_up():
                         clear()
                         break
         except (ValueError,TypeError) as e:
-            input('Your Balance Should Be Only Number Please Try Again...')
+            input('It Should Be Only Number Please Try Again...')
             clear()
         except KeyboardInterrupt:
             print('Exit Top Up Menu ...')
