@@ -31,12 +31,14 @@ def create_table(id,field_name):
     x.field_names=field_name
     j = 1
     ls_per_user= []
-    for index_name in range (len(field_name)):
+    for index_name in range (len(field_name)-1):
         if index_name == 0:
             ls_per_user.append(id)
         else:
             ls_per_user.append(data[id][field_name[index_name]])
             j += 1
+    Balance = f"{data[id]['Balance']} Bath"
+    ls_per_user.append(Balance)
     # print(ls_per_user)
     table = lambda x : x
     x.add_row([table(k)for k in ls_per_user])
@@ -55,7 +57,7 @@ def table_user(mode):
     for id in data.keys():
         name = data[id]['Name']
         status = data[id]['Status']
-        balance = data[id]['Balance']
+        balance = f"{data[id]['Balance']} bath"
         age = data[id]['Age']
         user_table.add_row([id,name,age,status,balance])
     print(user_table) 
@@ -503,6 +505,10 @@ def pay_1():
                     pay_discount=pay-rate
                     stable = data[user_id]['Balance']-pay_discount
                     data[user_id]['Balance'] = stable
+                    rate = f"{rate} Bath"
+                    stable = f"{stable} Bath"
+                    pay_discount = f"{pay_discount} Bath"
+                    pay = f"{pay} Bath"
                     result_payment.field_names=(['ID','Name','Age','Promotion','Full Price','Discount','Discount Price','Balance'])
                     result_payment.add_row([user_id,data[user_id]["Name"],user_age,status,pay,rate,pay_discount,stable])
                     print('\n',result_payment)
@@ -534,7 +540,6 @@ def pay_1():
 def top_up():
     while True:
         name_program()
-        top_up_table = PrettyTable()
         final_table = PrettyTable()
         try:
             print('''===Top Up User Menu===''')
@@ -547,9 +552,10 @@ def top_up():
                     Balance = data[user_id]['Balance']
                     Balance += topup
                     data[user_id]['Balance'] = Balance
+                    Balance = f"{Balance} Bath"
                     print('\nSuccessfully ! ! ! ! ')
                     final_table.field_names=['ID','Name','TopUp','Balance']
-                    final_table.add_row([user_id,name,f'+{topup}',Balance])
+                    final_table.add_row([user_id,name,f'+{topup} Bath',Balance])
                     print(final_table)
                     print('Thank You For Top Up')
                     input('Press Any Key To Continue... ')
