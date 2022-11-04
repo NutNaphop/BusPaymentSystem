@@ -1,6 +1,6 @@
 #Library and Value
 from random import *
-from os import system,name
+from os import system
 from time import sleep
 
 #Special Module Check Start ==> Dont Touch 
@@ -22,9 +22,7 @@ bus_stop = {1:{'BName':'Busta Shinjuku','Price':5},2:{'BName':'Tomigaya','Price'
 #Function System 
 def clear():
     sleep(0.5)
-    if name == 'nt':
-        _ = system('cls')
-
+    system('cls')
 # Create Table Function
 def create_table(id,field_name):
     x = PrettyTable()
@@ -549,6 +547,7 @@ def top_up():
                 topup=int(input('Top up : '))
                 
                 if topup>=1:
+                    name = data[user_id]['Name']
                     Balance = data[user_id]['Balance']
                     Balance += topup
                     data[user_id]['Balance'] = Balance
